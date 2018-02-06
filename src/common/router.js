@@ -74,25 +74,25 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
     '/blog/AddBlog': {
-      component: dynamicWrapper(app, ['chart'], () => import('../routes/Blog/AddBlog')),
+      component: dynamicWrapper(app, [], () => import('../routes/Blog/AddBlog')),
     },
     '/blog/AllBlog': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Blog/AllBlog')),
+      component: dynamicWrapper(app, [], () => import('../routes/Blog/AllBlog')),
     },
     '/blog/BlogCategory': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Blog/BlogCategory')),
+      component: dynamicWrapper(app, [], () => import('../routes/Blog/BlogCategory')),
     },
     '/life/TimeLine': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/TimeLine/TimeLine')),
+      component: dynamicWrapper(app, [], () => import('../routes/TimeLine/TimeLine')),
     },
     '/tools/Plan': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/DailyTools/DailyPlan')),
+      component: dynamicWrapper(app, [], () => import('../routes/DailyTools/DailyPlan')),
     },
     '/life/MusicBox': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/TimeLine/MusicBox')),
+      component: dynamicWrapper(app, [], () => import('../routes/TimeLine/MusicBox')),
     },
     '/setting/AboutMe': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/System/AboutMe')),
+      component: dynamicWrapper(app, [], () => import('../routes/System/AboutMe')),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
