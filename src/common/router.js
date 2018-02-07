@@ -80,7 +80,7 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/Blog/AllBlog')),
     },
     '/blog/BlogCategory': {
-      component: dynamicWrapper(app, [], () => import('../routes/Blog/BlogCategory')),
+      component: dynamicWrapper(app, ['blog'], () => import('../routes/Blog/BlogCategory')),
     },
     '/life/TimeLine': {
       component: dynamicWrapper(app, [], () => import('../routes/TimeLine/TimeLine')),
