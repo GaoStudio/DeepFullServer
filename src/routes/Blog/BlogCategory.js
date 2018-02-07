@@ -1,18 +1,19 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Component } from 'react';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './BlogCategory.less';
 import { connect } from 'dva';
 import { Table, Divider } from 'antd';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './BlogCategory.less';
 
-@connect(({blog,loading}) => {
-  console.log(loading)
-  return(
+
+@connect(({ blog, loading }) => {
+  console.log(loading);
+  return (
     {
-      blogCategorys:blog.blogCategorys,
-      loading: loading&&loading.models.list
+      blogCategorys: blog.blogCategorys,
+      loading: loading && loading.models.list,
     }
-  )
+  );
 })
 export default class BlogCategory extends Component {
   constructor(props) {
