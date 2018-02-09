@@ -144,7 +144,7 @@ export default class BlogCategory extends Component {
               新建
             </Button>
           </div>
-          <Table rowKey="bCategory_id" columns={this.columns} pagination={false} dataSource={this.props.blogCategorys.data} bordered />
+          <Table rowKey="bCategory_id" columns={this.columns} pagination={false} dataSource={this.props.blogCategorys&&this.props.blogCategorys.data} bordered />
         </div>
         <CreateForm
           {...parentMethods}
