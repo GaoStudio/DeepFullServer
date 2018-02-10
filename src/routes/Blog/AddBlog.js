@@ -33,8 +33,16 @@ export default class AddBlog extends Component {
       <PageHeaderLayout>
         <div className={styles.container}>
           <div className={styles.content}>
-            <CodeMirror options={{ mode: 'markdown' }} onChange={this.updateCode} autoFocus value={this.state.data} />
+              <div className={styles.pagename}>
+                  <input type='text' />
+              </div>
+              <ul className={styles.controller}>
+                  <li><a> <img src={require('../../assets/cimage.png')} alt="not found" /></a></li>
+                  <li><a>图片</a></li>
+              </ul>
+              <CodeMirror options={{ mode: 'markdown' }} onChange={this.updateCode} autoFocus value={this.state.data} />
           </div>
+          <div className={styles.spliter} />
           <div className={styles.spliter} />
           <div style={{ flex: 1 }}>
              view
