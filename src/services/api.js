@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const host = 'http://localhost:8080/deepfull';
+export const host = 'http://localhost:8080/deepfull';
 export async function selectBlogCategory() {
   return request(host+'/api/blog/category');
 }

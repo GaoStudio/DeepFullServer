@@ -9,6 +9,7 @@ import CodeBlock from '../../components/Custom/CodeLock'
 require('codemirror/mode/markdown/markdown');
 require('codemirror/lib/codemirror.css');
 import styles from './AddBlog.less';
+import { host } from '../../services/api';
 const initialSource = ``;
 const AddBlogForm = Form.create()((props) => {
     const { modalVisible, title,form, handleOK, handleModalVisible} = props;
@@ -24,8 +25,9 @@ const AddBlogForm = Form.create()((props) => {
         handleModalVisible();
     };
     const props2 = {
-        action: '//jsonplaceholder.typicode.com/posts/',
+        action: host+'/api/blog/image',
         listType: 'picture',
+        name:'image',
         className: 'upload-list-inline',
     };
     return (
