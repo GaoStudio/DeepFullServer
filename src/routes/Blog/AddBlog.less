@@ -1,7 +1,7 @@
 @import "~antd/lib/style/themes/default.less";
 @import "../../utils/utils.less";
-
 .container {
+  z-index: 10;
   display: flex;
   flex-direction: row;
   background-color: white;
@@ -10,7 +10,10 @@
   border: 1px solid #d9d9d9;
 }
 .content {
-  flex: 1;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .pagename {
   margin-top: 10px;
@@ -39,8 +42,12 @@
   margin: 0;
   list-style-type: none;
   background-color: #d9d9d9;
+  padding: 0px;
   border-bottom: 1px solid #ccc;
   font-size: 0;
+  .floatRight {
+    float: right;
+  }
   li {
     display: inline-block;
     cursor: pointer;
@@ -55,18 +62,105 @@
       font-size: 16px;
       &:hover {
         background-color: #595959;
+        text{
+          color: #ffffff;
+        }
+        .c1 {
+          background-image: url("../../assets/cimage_hover.png");
+        }
+        .c2 {
+          background-image: url("../../assets/save_hover.png");
+        }
+        .c3 {
+          background-image: url("../../assets/publish_hover.png");
+        }
+        .c4 {
+          background-image: url("../../assets/open_hover.png");
+        }
+        .c5 {
+          background-image: url("../../assets/hostory_hover.png");
+        }
       }
-      img {
-        width: auto;
-        height: 20px;
+      span {
+        width: 18px;
+        height: 18px;
+      }
+      text {
+        margin-left: 5px;
+        font-size: 14px;
+        color: #515151;
+      }
+      .c1 {
+        background-size: contain;
+        background-image: url("../../assets/cimage.png");
+      }
+      .c2 {
+        background-size: contain;
+        background-image: url("../../assets/save.png");
+      }
+      .c3 {
+        background-size: contain;
+        background-image: url("../../assets/publish.png");
+      }
+      .c4 {
+        background-size: contain;
+        background-image: url("../../assets/open.png");
+      }
+      .c5 {
+        background-size: contain;
+        background-image: url("../../assets/hostory.png");
       }
     }
   }
 }
+.editor {
+  overflow: auto;
+  height: 100%;
+}
 .spliter {
   width: 1px;
   height: 600px;
-  z-index: 10000;
+  z-index: 10;
   border: 1px solid #d9d9d9;
   cursor: ew-resize;
+}
+.result {
+  padding: 20px;
+  color: #444;
+  height: 100%;
+  overflow: auto;
+  font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.5em;
+  pre {
+    border: 1px solid #ccc;
+  }
+
+  blockquote {
+    color: #666;
+    margin: 0;
+    padding-left: 3em;
+    border-left: 0.5em #eee solid;
+  }
+
+  tr {
+    border-top: 1px solid #c6cbd1;
+    background: #fff;
+  }
+
+  th,
+  td {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+  }
+
+  table tr:nth-child(2n) {
+    background: #f6f8fa;
+  }
+  table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0px;
+    border-color: grey;
+  }
 }
