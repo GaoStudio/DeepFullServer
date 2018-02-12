@@ -2,17 +2,19 @@
 import { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Divider , Form, Modal, Input, Upload,Icon,message, Button} from 'antd';
+import { Divider , Select,Form, Modal, Input, Upload,Icon,message, Button} from 'antd';
 import Markdown from 'react-markdown'
 const FormItem = Form.Item;
+const Option = Select.Option;
 import CodeBlock from '../../components/Custom/CodeLock'
 require('codemirror/mode/markdown/markdown');
 require('codemirror/lib/codemirror.css');
 import styles from './AddBlog.less';
 import { host } from '../../services/api';
+import {connect} from "dva";
 const initialSource = ``;
 const AddBlogForm = Form.create()((props) => {
-    const { modalVisible, title,form, handleOK, handleModalVisible} = props;
+    const { modalVisible, data,title,form, handleOK, handleModalVisible} = props;
     const okHandle = () => {
         form.validateFields((err, fieldsValue) => {
             if (err) return;
@@ -21,15 +23,27 @@ const AddBlogForm = Form.create()((props) => {
         });
     };
     const CancelHandle = () => {
-        form.resetFields();
         handleModalVisible();
     };
+    const onChangeHandle = (data) => {
+        if(data&&data.file.response){
+            form.setFieldsValue({
+                bCategory_path: host+"/"+data.file.response.data,
+            });
+        }
+    }
     const props2 = {
         action: host+'/api/blog/image',
         listType: 'picture',
         name:'image',
         className: 'upload-list-inline',
+        onChange:onChangeHandle,
     };
+    const children = [];
+    for (let i = 0; i < data.length; i++) {
+        children.push(<Option key={data[i].bCategory_id}>{data[i].bCategory_name}</Option>);
+    }
+
     return (
         <Modal
             title={title}
@@ -37,15 +51,18 @@ const AddBlogForm = Form.create()((props) => {
             onOk={okHandle}
             onCancel={CancelHandle}
         >
+            <Form>
             <FormItem
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 15 }}
                 label="分类名称"
             >
                 {form.getFieldDecorator('bCategory_name', {
-                    rules: [{ required: true, message: '请输入分类名称' }],
+                    rules: [{ required: true, message: 'Please select a country' }],
                 })(
-                    <Input placeholder="请输入分类名称" />
+                    <Select  placeholder="Please select a country">
+                        {children}
+                    </Select>
                 )}
             </FormItem>
             <FormItem
@@ -56,16 +73,13 @@ const AddBlogForm = Form.create()((props) => {
                 {form.getFieldDecorator('bCategory_path', {
                     rules: [{ required: true, message: '请输入路径' }],
                 })(
-                    <div>
                         <Input placeholder="请输入网络链接" />
-                        <Upload {...props2}>
-                            <Button>
-                                <Icon type="upload" /> upload
-                            </Button>
-                        </Upload>
-                    </div>
-
                 )}
+                <Upload {...props2}>
+                    <Button>
+                        <Icon type="upload" /> upload
+                    </Button>
+                </Upload>
             </FormItem>
             <FormItem
                 labelCol={{ span: 5 }}
@@ -78,6 +92,7 @@ const AddBlogForm = Form.create()((props) => {
                     <Input.TextArea placeholder="请输入副标题"/>
                 )}
             </FormItem>
+            </Form>
         </Modal>
     );
 });
@@ -90,7 +105,13 @@ const fullScreenStyle={
     bottom:0,
     height: '100%',
 }
-
+@connect(({ blog }) => {
+    return (
+        {
+            blogCategorys: blog.blogCategorys,
+        }
+    );
+})
 export default class AddBlog extends Component {
   constructor(props) {
     super(props);
@@ -102,6 +123,12 @@ export default class AddBlog extends Component {
         fullScreen:false,
         addBlogVisible:false
     };
+  }
+  componentDidMount() {
+     console.log(this.props.blogCategorys)
+     /* this.props.dispatch({
+          type: 'blog/blogCategorys',
+      });*/
   }
   updateState=(newData) => {
       this.setState({
@@ -176,6 +203,7 @@ export default class AddBlog extends Component {
             </div>
             <AddBlogForm
                 title = {this.state.blogTitle}
+                data = {this.props.blogCategorys&&this.props.blogCategorys.data}
                 handleOK = {this._addBlogOK}
                 handleModalVisible={this._handleBlogOKVisible}
                 modalVisible={this.state.addBlogVisible}/>

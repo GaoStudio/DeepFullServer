@@ -103,7 +103,7 @@ export default class BlogCategory extends Component {
   }
   componentDidMount() {
     this.props.dispatch({
-      type: 'blog/blogCategorys',
+        type: 'blog/blogCategorys',
     });
   }
   _operationAction=(text, record) => {

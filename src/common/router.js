@@ -74,7 +74,7 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
     '/blog/AddBlog': {
-      component: dynamicWrapper(app, [], () => import('../routes/Blog/AddBlog')),
+      component: dynamicWrapper(app, ['blog'], () => import('../routes/Blog/AddBlog')),
     },
     '/blog/AllBlog': {
       component: dynamicWrapper(app, [], () => import('../routes/Blog/AllBlog')),

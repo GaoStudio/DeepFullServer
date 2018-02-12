@@ -5,6 +5,12 @@ export const host = 'http://localhost:8080/deepfull';
 export async function selectBlogCategory() {
   return request(host+'/api/blog/category');
 }
+export async function addBlog(params) {
+    return request(host+'/api/blog/addblog', {
+        method: 'POST',
+        body: params,
+    });
+}
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
