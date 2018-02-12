@@ -2,7 +2,7 @@
 import { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Divider , Select,Form, Modal, Input, Upload,Icon,message, Button} from 'antd';
+import { Divider , Select,Form, Modal, Input, Upload,Icon,Spin,message, Button} from 'antd';
 import Markdown from 'react-markdown'
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -18,6 +18,7 @@ const AddBlogForm = Form.create()((props) => {
     const okHandle = () => {
         form.validateFields((err, fieldsValue) => {
             if (err) return;
+            handleModalVisible();
             form.resetFields();
             handleOK(fieldsValue);
         });
@@ -28,7 +29,7 @@ const AddBlogForm = Form.create()((props) => {
     const onChangeHandle = (data) => {
         if(data&&data.file.response){
             form.setFieldsValue({
-                bCategory_path: host+"/"+data.file.response.data,
+                blog_logo: host+"/"+data.file.response.data,
             });
         }
     }
@@ -57,7 +58,7 @@ const AddBlogForm = Form.create()((props) => {
                 wrapperCol={{ span: 15 }}
                 label="分类名称"
             >
-                {form.getFieldDecorator('bCategory_name', {
+                {form.getFieldDecorator('bCategory_id', {
                     rules: [{ required: true, message: 'Please select a country' }],
                 })(
                     <Select  placeholder="Please select a country">
@@ -70,7 +71,7 @@ const AddBlogForm = Form.create()((props) => {
                 wrapperCol={{ span: 15 }}
                 label="封面大图"
             >
-                {form.getFieldDecorator('bCategory_path', {
+                {form.getFieldDecorator('blog_logo', {
                     rules: [{ required: true, message: '请输入路径' }],
                 })(
                         <Input placeholder="请输入网络链接" />
@@ -86,7 +87,7 @@ const AddBlogForm = Form.create()((props) => {
                 wrapperCol={{ span: 15 }}
                 label="副标题"
             >
-                {form.getFieldDecorator('bCategory_sort', {
+                {form.getFieldDecorator('blog_sub_title', {
                     rules: [{ required: true, message: 'Please input some...' }],
                 })(
                     <Input.TextArea placeholder="请输入副标题"/>
@@ -105,10 +106,12 @@ const fullScreenStyle={
     bottom:0,
     height: '100%',
 }
+const antIcon = <Icon type="loading" style={{ fontSize: 12 ,marginRight:5,paddingBottom:5,color:'#595959'}} spin />;
 @connect(({ blog }) => {
     return (
         {
             blogCategorys: blog.blogCategorys,
+            saveBlogStats: blog.saveBlogStats,
         }
     );
 })
@@ -155,7 +158,13 @@ export default class AddBlog extends Component {
     }
   }
   _addBlogOK=(fields)=>{
-
+      console.log(fields)
+      fields.blog_content = this.state.blogData;
+      fields.blog_title = this.state.blogTitle;
+      this.props.dispatch({
+          type: 'blog/addBlog',
+          payload:fields
+      });
   }
   _handleBlogOKVisible = (flag) => {
       this.setState({
@@ -171,7 +180,9 @@ export default class AddBlog extends Component {
           fullScreen:!this.state.fullScreen
       })
   }
+
   render() {
+
       return (
           <PageHeaderLayout>
             <div className={styles.container} style={this.state.fullScreen?fullScreenStyle:null}>
@@ -183,7 +194,7 @@ export default class AddBlog extends Component {
                       <li onClick={this._insertPageImage} ><a><span className={styles.c1}></span></a></li>
                       <li><a><span className={styles.c5}></span></a></li>
                       <li onClick={this._publicPageContent} className={styles.floatRight}><a><span className={styles.c3}></span><text>发布更新</text></a></li>
-                      <li onClick={this._savePageContent} className={styles.floatRight}><a className={styles}><span className={styles.c2}></span></a></li>
+                      <li onClick={this._savePageContent} className={styles.floatRight}><a className={styles}>{this.props.saveBlogStats?<Spin indicator={antIcon} />:null}<span className={styles.c2}></span></a></li>
                       <li onClick={this._openFullscreen}  className={styles.floatRight}><a className={styles}><span className={styles.c4}></span></a></li>
                   </ul>
                   <div className={styles.editor}>

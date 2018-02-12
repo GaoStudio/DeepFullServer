@@ -9,6 +9,7 @@ export default {
 
   state: {
     blogCategorys: {},
+    saveBlogStats:false,
     status: undefined,
   },
 
@@ -22,6 +23,10 @@ export default {
       });
     },
     *addBlog({ payload }, { call, put }) {
+      yield put({
+          type: 'changeSaveBlogStatus',
+          payload: true,
+      });
       const response = yield call(addBlog, payload);
       if(response.status==0){
           message.success('添加成功');
@@ -29,13 +34,19 @@ export default {
           message.success('添加异常');
       }
       yield put({
-          type: 'changeLoadingStatus',
-          payload: response,
+          type: 'changeSaveBlogStatus',
+          payload: false,
       });
     },
   },
 
   reducers: {
+    changeSaveBlogStatus(state, action){
+      return {
+        ...state,
+        saveBlogStats: action.payload,
+      };
+    },
     selectBlogCategory(state, action) {
       return {
         ...state,
