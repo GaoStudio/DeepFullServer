@@ -29,7 +29,7 @@ const AddBlogForm = Form.create()((props) => {
     const onChangeHandle = (data) => {
         if(data&&data.file.response){
             form.setFieldsValue({
-                blog_logo: host+"/"+data.file.response.data,
+                bblog_logo: host+"/"+data.file.response.data,
             });
         }
     }
@@ -71,7 +71,7 @@ const AddBlogForm = Form.create()((props) => {
                 wrapperCol={{ span: 15 }}
                 label="封面大图"
             >
-                {form.getFieldDecorator('blog_logo', {
+                {form.getFieldDecorator('bblog_logo', {
                     rules: [{ required: true, message: '请输入路径' }],
                 })(
                         <Input placeholder="请输入网络链接" />
@@ -87,7 +87,7 @@ const AddBlogForm = Form.create()((props) => {
                 wrapperCol={{ span: 15 }}
                 label="副标题"
             >
-                {form.getFieldDecorator('blog_sub_title', {
+                {form.getFieldDecorator('bblog_sub_title', {
                     rules: [{ required: true, message: 'Please input some...' }],
                 })(
                     <Input.TextArea placeholder="请输入副标题"/>
@@ -160,7 +160,7 @@ export default class AddBlog extends Component {
   _addBlogOK=(fields)=>{
       console.log(fields)
       fields.blog_content = this.state.blogData;
-      fields.blog_title = this.state.blogTitle;
+      fields.bblog_title = this.state.blogTitle;
       this.props.dispatch({
           type: 'blog/addBlog',
           payload:fields
@@ -194,7 +194,7 @@ export default class AddBlog extends Component {
                       <li onClick={this._insertPageImage} ><a><span className={styles.c1}></span></a></li>
                       <li><a><span className={styles.c5}></span></a></li>
                       <li onClick={this._publicPageContent} className={styles.floatRight}><a><span className={styles.c3}></span><text>发布更新</text></a></li>
-                      <li onClick={this._savePageContent} className={styles.floatRight}><a className={styles}>{this.props.saveBlogStats?<Spin indicator={antIcon} />:null}<span className={styles.c2}></span></a></li>
+                      <li onClick={this._savePageContent} className={styles.floatRight}><a className={styles}>{this.state.saveBlogStats?<Spin indicator={antIcon} />:null}<span className={styles.c2}></span></a></li>
                       <li onClick={this._openFullscreen}  className={styles.floatRight}><a className={styles}><span className={styles.c4}></span></a></li>
                   </ul>
                   <div className={styles.editor}>

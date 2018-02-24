@@ -2,6 +2,7 @@ import fetch from 'dva/fetch';
 import { notification } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
+import * as querystring from "qs";
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -51,10 +52,10 @@ export default function request(url, options) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
         ...newOptions.headers,
       };
-      newOptions.body = JSON.stringify(newOptions.body);
+      newOptions.body = querystring.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData
       newOptions.headers = {
