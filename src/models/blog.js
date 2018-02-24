@@ -1,5 +1,5 @@
 
-import {addBlog, selectBlogCategory} from '../services/api';
+import {addBlog,allBlog, selectBlogCategory} from '../services/api';
 import {routerRedux} from "dva/router";
 import {reloadAuthorized} from "../utils/Authorized";
 import {message} from "antd/lib/index";
@@ -9,6 +9,7 @@ export default {
 
   state: {
     blogCategorys: {},
+    blogs: {},
     saveBlogStats:false,
     status: undefined,
   },
@@ -21,6 +22,14 @@ export default {
         type: 'selectBlogCategory',
         payload: response,
       });
+    },
+    *allBlog({ payload }, { call, put }) {
+      console.log(payload)
+        const response = yield call(allBlog, payload);
+        yield put({
+            type: 'selectAllBlog',
+            payload: response,
+        });
     },
     *addBlog({ payload }, { call, put }) {
       yield put({
@@ -48,9 +57,16 @@ export default {
       };
     },
     selectBlogCategory(state, action) {
+      console.log(action.payload)
       return {
         ...state,
         blogCategorys: action.payload,
+      };
+    },
+    selectAllBlog(state, action) {
+      return {
+        ...state,
+        blogs: action.payload,
       };
     },
   },

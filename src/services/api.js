@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-export const host = 'http://localhost:8080/deepfull';
+export const host = 'http://localhost:8080';
 export async function selectBlogCategory() {
   return request(host+'/api/blog/category');
 }
@@ -10,6 +10,9 @@ export async function addBlog(params) {
         method: 'POST',
         body: params,
     });
+}
+export async function allBlog(params) {
+    return request(host+`/api/blog/blogs?${stringify(params)}`);
 }
 export async function queryProjectNotice() {
   return request('/api/project/notice');

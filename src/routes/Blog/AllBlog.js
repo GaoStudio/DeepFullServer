@@ -1,34 +1,64 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Component,Table } from 'react';
+import { Component } from 'react';
+import { Table } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import StandardTable from '../../components/StandardTable';
-const data = [{
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-}, {
-    key: '2',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-}, {
-    key: '3',
-    name: 'Jim Green',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-}, {
-    key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-}];
+import {connect} from "dva";
 
+const columns = [{
+    title: '时间',
+    dataIndex: 'bblog_time',
+    key: 'bblog_time',
+},{
+    title: '标题',
+    dataIndex: 'bblog_title',
+    key: 'bblog_title',
+}, {
+    title: '副标题',
+    dataIndex: 'bblog_sub_title',
+    key: 'bblog_sub_title',
+}, {
+    title: '封面',
+    dataIndex: 'bblog_logo',
+    key: 'bblog_logo',
+}, {
+    title: '分类',
+    dataIndex: 'bCategory_name',
+    key: 'bCategory_name',
+}, {
+    title: '浏览量',
+    dataIndex: 'bblog_views',
+    key: 'bblog_views',
+}, {
+    title: '状态',
+    dataIndex: 'bblog_state',
+    key: 'bblog_state',
+}, {
+    title: '操作',
+    dataIndex: 'action',
+    key: 'action',
+}];
+@connect(({ blog }) => {
+    console.log(blog.blogs)
+    return (
+        {
+           blogs: blog.blogs,
+        }
+    );
+})
 export default class AllBlog extends Component {
+  constructor(props){
+      super(props)
+  }
+  componentDidMount() {
+      this.props.dispatch({
+          type: 'blog/allBlog',
+          payload: {path:'Home'}
+      });
+  }
   render() {
     return (
       <PageHeaderLayout >
-          <Table data={data}/>
+          <Table dataSource={this.props.blogs&&this.props.blogs.data} columns={columns} bordered/>
       </PageHeaderLayout>
     );
   }

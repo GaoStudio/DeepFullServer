@@ -175,7 +175,6 @@ export default class AddBlog extends Component {
 
   }
   _openFullscreen=()=>{
-      console.log('hhaha')
       this.setState({
           fullScreen:!this.state.fullScreen
       })
