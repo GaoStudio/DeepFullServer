@@ -2,7 +2,7 @@
 import { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Divider , Select,Form, Modal, Input, Upload,Icon,Spin,message, Button} from 'antd';
+import { Divider , Select,Form, Row , Col, Modal, Input, Upload,Icon,Spin,message, Button} from 'antd';
 import Markdown from 'react-markdown'
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -29,7 +29,7 @@ const AddBlogForm = Form.create()((props) => {
     const onChangeHandle = (data) => {
         if(data&&data.file.response){
             form.setFieldsValue({
-                bblog_logo: host+"/"+data.file.response.data,
+                bblog_logo: host+"/"+data.file.response.data.image_url,
             });
         }
     }
@@ -98,7 +98,102 @@ const AddBlogForm = Form.create()((props) => {
         </Modal>
     );
 });
-
+const UploadImageForm = Form.create()((props) => {
+    const { modalVisible,handleOK,handleModalVisible,title,form} = props;
+    const onChangeHandle = (data) => {
+        if(data&&data.file.response){
+            console.log(data.file.response)
+            form.setFieldsValue({
+                image_url: host+"/"+data.file.response.data.image_url,
+                image_width:data.file.response.data.width,
+                image_height:data.file.response.data.height,
+            });
+        }
+    }
+    const CancelHandle = () => {
+        handleModalVisible();
+    };
+    const okHandle = () => {
+        form.validateFields((err, fieldsValue) => {
+            if (err) return;
+            handleModalVisible();
+            form.resetFields();
+            handleOK(fieldsValue);
+        });
+    };
+    const props2 = {
+        action: host+'/api/blog/image',
+        listType: 'picture',
+        name:'image',
+        className: 'upload-list-inline',
+        onChange:onChangeHandle,
+    };
+    return (
+        <Modal
+            title={title}
+            onOk={okHandle}
+            onCancel={CancelHandle}
+            visible={modalVisible}>
+            <FormItem
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 15 }}
+                label="图片地址"
+            >
+                {form.getFieldDecorator('image_url', {
+                    rules: [{ required: true, message: '请输入路径' }],
+                })(
+                    <Input placeholder="请输入网络链接" />
+                )}
+                <Upload {...props2}>
+                    <Button>
+                        <Icon type="upload" /> upload
+                    </Button>
+                </Upload>
+            </FormItem>
+            <FormItem
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 15 }}
+                label="替代文本ALT">
+                {form.getFieldDecorator('image_alt', {rules: [{required: false,}],})(
+                    <Input placeholder="替代文本" />
+                )}
+            </FormItem>
+            <FormItem
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 15 }}
+                label="宽高">
+                <Row gutter={8}>
+                    <Col span={12}>
+                        {form.getFieldDecorator('image_width', {
+                            rules: [{ required: true, message: 'Please input the captcha you got!' }],
+                        })(
+                            <Input placeholder="宽度" />
+                        )}
+                    </Col>
+                    <Col span={12}>
+                        {form.getFieldDecorator('image_height', {
+                            rules: [{ required: true, message: 'Please input the captcha you got!' }],
+                        })(
+                            <Input placeholder="高度" />
+                        )}
+                    </Col>
+                </Row>
+            </FormItem>
+            <FormItem
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 15 }}
+                label="点击链接">
+                {form.getFieldDecorator('image_link', {
+                    rules: [{
+                        required: false,
+                    }],
+                })(
+                    <Input placeholder="链接" />
+                )}
+            </FormItem>
+        </Modal>
+    );
+});
 const fullScreenStyle={
     position:'absolute',
     top:0,
@@ -125,7 +220,8 @@ export default class AddBlog extends Component {
         blogData: initialSource,
         htmlMode: 'raw',
         fullScreen:false,
-        addBlogVisible:false
+        addBlogVisible:false,
+        uploadImageVisible:false
     };
   }
   componentDidMount() {
@@ -147,7 +243,7 @@ export default class AddBlog extends Component {
       })
   }
   _insertPageImage=()=>{
-
+      this._handleUpImageVisible(true)
   }
   _savePageContent=()=>{
     if(!this.state.blogTitle){
@@ -167,6 +263,17 @@ export default class AddBlog extends Component {
       this.props.dispatch({
           type: 'blog/addBlog',
           payload:fields
+      });
+  }
+  _addImageOK = (fields) =>{
+      let image = '!['+fields.image_alt+']';
+      image = image+'('+ fields.image_url+')';
+      //image = image+'{:height='+'"'+fields.image_height+'px"'+' width='+'"'+fields.image_width+'px"}'
+      this.updateState(this.state.blogData+image);
+  }
+  _handleUpImageVisible = (flag)=>{
+      this.setState({
+          uploadImageVisible: !!flag,
       });
   }
   _handleBlogOKVisible = (flag) => {
@@ -195,6 +302,7 @@ export default class AddBlog extends Component {
                   <ul className={styles.controller}>
                       <li onClick={this._insertPageImage} ><a><span className={styles.c1}></span></a></li>
                       <li><a><span className={styles.c5}></span></a></li>
+                      <li><a><span className={styles.c6}></span></a></li>
                       <li onClick={this._publicPageContent} className={styles.floatRight}><a><span className={styles.c3}></span><text>发布更新</text></a></li>
                       <li onClick={this._savePageContent} className={styles.floatRight}><a className={styles}>{this.state.saveBlogStats?<Spin indicator={antIcon} />:null}<span className={styles.c2}></span></a></li>
                       <li onClick={this._openFullscreen}  className={styles.floatRight}><a className={styles}><span className={styles.c4}></span></a></li>
@@ -220,6 +328,11 @@ export default class AddBlog extends Component {
                 handleOK = {this._addBlogOK}
                 handleModalVisible={this._handleBlogOKVisible}
                 modalVisible={this.state.addBlogVisible}/>
+            <UploadImageForm
+                title = '插入图片'
+                handleModalVisible={this._handleUpImageVisible}
+                handleOK = {this._addImageOK}
+                modalVisible={this.state.uploadImageVisible}/>
           </PageHeaderLayout>
       );
   }
