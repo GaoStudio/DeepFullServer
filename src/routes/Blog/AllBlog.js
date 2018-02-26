@@ -1,8 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Component } from 'react';
-import { Table } from 'antd';
+import React ,{ Component } from 'react';
+import { Table ,Divider} from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {connect} from "dva";
+import {host} from "../../services/api";
 
 const columns = [{
     title: '时间',
@@ -20,10 +21,12 @@ const columns = [{
     title: '封面',
     dataIndex: 'bblog_logo',
     key: 'bblog_logo',
+    render: val => <img style={{maxWidth:100,height:'auto'}} src={host+'/'+val}></img>
 }, {
     title: '分类',
-    dataIndex: 'bCategory_name',
-    key: 'bCategory_name',
+    dataIndex: 'blogCategory',
+    key: 'blogCategory',
+    render: val => <span>{val.bCategory_name}</span>
 }, {
     title: '浏览量',
     dataIndex: 'bblog_views',
@@ -34,8 +37,13 @@ const columns = [{
     key: 'bblog_state',
 }, {
     title: '操作',
-    dataIndex: 'action',
-    key: 'action',
+    render: () => (
+        <div>
+            <a href="">编辑</a>
+            <Divider type="vertical" />
+            <a href="">发布</a>
+        </div>
+    ),
 }];
 @connect(({ blog }) => {
     console.log(blog.blogs)
