@@ -41,10 +41,11 @@ const AddBlogForm = Form.create()((props) => {
         onChange:onChangeHandle,
     };
     const children = [];
-    for (let i = 0; i < data.length; i++) {
-        children.push(<Option key={data[i].bCategory_id}>{data[i].bCategory_name}</Option>);
+    if(data){
+        for (let i = 0; i < data.length; i++) {
+            children.push(<Option key={data[i].bCategory_id}>{data[i].bCategory_name}</Option>);
+        }
     }
-
     return (
         <Modal
             title={title}
@@ -129,9 +130,11 @@ export default class AddBlog extends Component {
   }
   componentDidMount() {
      console.log(this.props.blogCategorys)
-     /* this.props.dispatch({
-          type: 'blog/blogCategorys',
-      });*/
+      if(this.props.blogCategorys){
+          this.props.dispatch({
+              type: 'blog/blogCategorys',
+          });
+      }
   }
   updateState=(newData) => {
       this.setState({
@@ -197,7 +200,7 @@ export default class AddBlog extends Component {
                       <li onClick={this._openFullscreen}  className={styles.floatRight}><a className={styles}><span className={styles.c4}></span></a></li>
                   </ul>
                   <div className={styles.editor}>
-                      <CodeMirror  options={{ mode: 'markdown' }} onChange={this.updateState} autoFocus value={this.state.blogData} />
+                      <CodeMirror className={styles.CodeMirror}  options={{ mode: 'markdown' }} onChange={this.updateState} autoFocus value={this.state.blogData} />
                   </div>
               </div>
               <div className={styles.spliter} style={this.state.fullScreen?{height:'100%'}:null}/>
