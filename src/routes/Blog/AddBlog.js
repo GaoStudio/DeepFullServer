@@ -28,6 +28,7 @@ const antIcon = <Icon type="loading" style={{ fontSize: 12 ,marginRight:5,paddin
         {
             blogCategorys: blog.blogCategorys,
             saveBlogStats: blog.saveBlogStats,
+            blogDetail:blog.blogDetail,
         }
     );
 })
@@ -35,8 +36,9 @@ export default class AddBlog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        blog:this.props.blog,
-        blogTitle:'测试数据',
+        blogBasic:this.props.location.state&&this.props.location.state.data,
+        blogDetail:null,
+        blogTitle:this.props.location.state?this.props.location.state.data.bblog_title:'测试数据',
         blogData: initialSource,
         htmlMode: 'raw',
         fullScreen:false,
@@ -44,8 +46,22 @@ export default class AddBlog extends Component {
         uploadImageVisible:false
     };
   }
+  componentWillReceiveProps(nextProps){
+      console.log(nextProps)
+      if (nextProps.blogDetail!=this.props.blogDetail) {
+          this.setState({
+              blogDetail: nextProps.blogDetail,
+              blogData:nextProps.blogDetail.blog_content
+          });
+      }
+  }
   componentDidMount() {
-     console.log(this.props.blogCategorys)
+      if(this.props.location.state){
+          this.props.dispatch({
+              type: 'blog/selectBlog',
+              payload:{blogid:this.props.location.state.data.bblog_id},
+          });
+      }
       if(this.props.blogCategorys){
           this.props.dispatch({
               type: 'blog/blogCategorys',

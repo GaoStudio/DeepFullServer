@@ -101,6 +101,7 @@ export default class BlogCategory extends Component {
     this.type = 1;
     this.record = null;
   }
+
   componentDidMount() {
     this.props.dispatch({
         type: 'blog/blogCategorys',

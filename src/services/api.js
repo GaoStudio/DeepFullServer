@@ -14,6 +14,9 @@ export async function addBlog(params) {
 export async function allBlog(params) {
     return request(host+`/api/blog/blogs?${stringify(params)}`);
 }
+export async function selectBlog(params) {
+    return request(host+`/api/blog/blog?${stringify(params)}`);
+}
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

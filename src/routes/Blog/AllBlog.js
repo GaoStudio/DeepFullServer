@@ -3,6 +3,7 @@ import React ,{ Component } from 'react';
 import { Table ,Divider} from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {connect} from "dva";
+import { routerRedux } from 'dva/router';
 import {host} from "../../services/api";
 import EditBlog from "./Dialog/EditBlog";
 
@@ -62,7 +63,7 @@ export default class AllBlog extends Component {
           <span>
               <a onClick={() => { this.type = 2, this.record = record, this._handleEditBlogVisible(true); }}>修改</a>
               <Divider type="vertical" />
-              <a href="#">编辑</a>
+              <a onClick={() => {   this.props.dispatch(routerRedux.push({pathname:'/blog/AddBlog', state: {data:record}}))}}>编辑</a>
               <Divider type="vertical" />
               <a href="#">发布</a>
           </span>
