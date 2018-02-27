@@ -2,198 +2,18 @@
 import { Component } from 'react';
 import CodeMirror from 'react-codemirror';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Divider , Select,Form, Row , Col, Modal, Input, Upload,Icon,Spin,message, Button} from 'antd';
+import { Icon,Spin,message} from 'antd';
 import Markdown from 'react-markdown'
-const FormItem = Form.Item;
-const Option = Select.Option;
+import UploadImage from './Dialog/UploadImage'
+
 import CodeBlock from '../../components/Custom/CodeLock'
 require('codemirror/mode/markdown/markdown');
 require('codemirror/lib/codemirror.css');
 import styles from './AddBlog.less';
-import { host } from '../../services/api';
 import {connect} from "dva";
+import SaveBlog from "./Dialog/SaveBlog";
+import React from "react";
 const initialSource = ``;
-const AddBlogForm = Form.create()((props) => {
-    const { modalVisible, data,title,form, handleOK, handleModalVisible} = props;
-    const okHandle = () => {
-        form.validateFields((err, fieldsValue) => {
-            if (err) return;
-            handleModalVisible();
-            form.resetFields();
-            handleOK(fieldsValue);
-        });
-    };
-    const CancelHandle = () => {
-        handleModalVisible();
-    };
-    const onChangeHandle = (data) => {
-        if(data&&data.file.response){
-            form.setFieldsValue({
-                bblog_logo: host+"/"+data.file.response.data.image_url,
-            });
-        }
-    }
-    const props2 = {
-        action: host+'/api/blog/image',
-        listType: 'picture',
-        name:'image',
-        className: 'upload-list-inline',
-        onChange:onChangeHandle,
-    };
-    const children = [];
-    if(data){
-        for (let i = 0; i < data.length; i++) {
-            children.push(<Option key={data[i].bCategory_id}>{data[i].bCategory_name}</Option>);
-        }
-    }
-    return (
-        <Modal
-            title={title}
-            visible={modalVisible}
-            onOk={okHandle}
-            onCancel={CancelHandle}
-        >
-            <Form>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="分类名称"
-            >
-                {form.getFieldDecorator('bCategory_id', {
-                    rules: [{ required: true, message: 'Please select a country' }],
-                })(
-                    <Select  placeholder="Please select a country">
-                        {children}
-                    </Select>
-                )}
-            </FormItem>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="封面大图"
-            >
-                {form.getFieldDecorator('bblog_logo', {
-                    rules: [{ required: true, message: '请输入路径' }],
-                })(
-                        <Input placeholder="请输入网络链接" />
-                )}
-                <Upload {...props2}>
-                    <Button>
-                        <Icon type="upload" /> upload
-                    </Button>
-                </Upload>
-            </FormItem>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="副标题"
-            >
-                {form.getFieldDecorator('bblog_sub_title', {
-                    rules: [{ required: true, message: 'Please input some...' }],
-                })(
-                    <Input.TextArea placeholder="请输入副标题"/>
-                )}
-            </FormItem>
-            </Form>
-        </Modal>
-    );
-});
-const UploadImageForm = Form.create()((props) => {
-    const { modalVisible,handleOK,handleModalVisible,title,form} = props;
-    const onChangeHandle = (data) => {
-        if(data&&data.file.response){
-            console.log(data.file.response)
-            form.setFieldsValue({
-                image_url: host+"/"+data.file.response.data.image_url,
-                image_width:data.file.response.data.width,
-                image_height:data.file.response.data.height,
-            });
-        }
-    }
-    const CancelHandle = () => {
-        handleModalVisible();
-    };
-    const okHandle = () => {
-        form.validateFields((err, fieldsValue) => {
-            if (err) return;
-            handleModalVisible();
-            form.resetFields();
-            handleOK(fieldsValue);
-        });
-    };
-    const props2 = {
-        action: host+'/api/blog/image',
-        listType: 'picture',
-        name:'image',
-        className: 'upload-list-inline',
-        onChange:onChangeHandle,
-    };
-    return (
-        <Modal
-            title={title}
-            onOk={okHandle}
-            onCancel={CancelHandle}
-            visible={modalVisible}>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="图片地址"
-            >
-                {form.getFieldDecorator('image_url', {
-                    rules: [{ required: true, message: '请输入路径' }],
-                })(
-                    <Input placeholder="请输入网络链接" />
-                )}
-                <Upload {...props2}>
-                    <Button>
-                        <Icon type="upload" /> upload
-                    </Button>
-                </Upload>
-            </FormItem>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="替代文本ALT">
-                {form.getFieldDecorator('image_alt', {rules: [{required: false,}],})(
-                    <Input placeholder="替代文本" />
-                )}
-            </FormItem>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="宽高">
-                <Row gutter={8}>
-                    <Col span={12}>
-                        {form.getFieldDecorator('image_width', {
-                            rules: [{ required: true, message: 'Please input the captcha you got!' }],
-                        })(
-                            <Input placeholder="宽度" />
-                        )}
-                    </Col>
-                    <Col span={12}>
-                        {form.getFieldDecorator('image_height', {
-                            rules: [{ required: true, message: 'Please input the captcha you got!' }],
-                        })(
-                            <Input placeholder="高度" />
-                        )}
-                    </Col>
-                </Row>
-            </FormItem>
-            <FormItem
-                labelCol={{ span: 5 }}
-                wrapperCol={{ span: 15 }}
-                label="点击链接">
-                {form.getFieldDecorator('image_link', {
-                    rules: [{
-                        required: false,
-                    }],
-                })(
-                    <Input placeholder="链接" />
-                )}
-            </FormItem>
-        </Modal>
-    );
-});
 const fullScreenStyle={
     position:'absolute',
     top:0,
@@ -266,8 +86,7 @@ export default class AddBlog extends Component {
       });
   }
   _addImageOK = (fields) =>{
-      let image = '!['+fields.image_alt+']';
-      image = image+'('+ fields.image_url+')';
+      let image = '<img src="'+fields.image_url+'" width = "'+fields.image_width+'" height = "'+fields.image_height+'" alt="'+fields.image_alt+'" />'
       //image = image+'{:height='+'"'+fields.image_height+'px"'+' width='+'"'+fields.image_width+'px"}'
       this.updateState(this.state.blogData+image);
   }
@@ -291,7 +110,6 @@ export default class AddBlog extends Component {
   }
 
   render() {
-
       return (
           <PageHeaderLayout>
             <div className={styles.container} style={this.state.fullScreen?fullScreenStyle:null}>
@@ -322,13 +140,13 @@ export default class AddBlog extends Component {
                   />
               </div>
             </div>
-            <AddBlogForm
+            <SaveBlog
                 title = {this.state.blogTitle}
                 data = {this.props.blogCategorys&&this.props.blogCategorys.data}
                 handleOK = {this._addBlogOK}
                 handleModalVisible={this._handleBlogOKVisible}
                 modalVisible={this.state.addBlogVisible}/>
-            <UploadImageForm
+            <UploadImage
                 title = '插入图片'
                 handleModalVisible={this._handleUpImageVisible}
                 handleOK = {this._addImageOK}
