@@ -28,11 +28,17 @@ export default class EditBlog extends PureComponent {
         }
     }
     render(){
-        const { modalVisible, data,title,form} = this.props;
+        const { modalVisible, data,title,form ,record} = this.props;
         const props2 = {
             action: host+'/api/blog/image',
             listType: 'picture',
             name:'image',
+            defaultFileList: record?[{
+                    uid: 1,
+                    name: record.bblog_logo,
+                    status: 'done',
+                    url: host+'/'+record.bblog_logo,
+                }]: [],
             className: 'upload-list-inline',
             onChange:this.onChangeHandle,
         };
@@ -56,6 +62,7 @@ export default class EditBlog extends PureComponent {
                         label="标题"
                     >
                         {form.getFieldDecorator('bblog_title', {
+                            initialValue: record ? record.bblog_title : null,
                             rules: [{ required: true, message: 'Please select a country' }],
                         })(
                             <Input placeholder="请输入标题"/>
@@ -67,6 +74,7 @@ export default class EditBlog extends PureComponent {
                         label="分类名称"
                     >
                         {form.getFieldDecorator('bCategory_id', {
+                            initialValue:record ? record.blogCategory.bCategory_name : null,
                             rules: [{ required: true, message: 'Please select a country' }],
                         })(
                             <Select  placeholder="Please select a country">
@@ -80,6 +88,7 @@ export default class EditBlog extends PureComponent {
                         label="封面大图"
                     >
                         {form.getFieldDecorator('bblog_logo', {
+                            initialValue: record ? host+'/'+record.bblog_logo : null,
                             rules: [{ required: true, message: '请输入路径' }],
                         })(
                             <Input placeholder="请输入网络链接" />
@@ -96,6 +105,7 @@ export default class EditBlog extends PureComponent {
                         label="副标题"
                     >
                         {form.getFieldDecorator('bblog_sub_title', {
+                            initialValue: record ? record.bblog_sub_title : null,
                             rules: [{ required: true, message: 'Please input some...' }],
                         })(
                             <Input.TextArea placeholder="请输入副标题"/>

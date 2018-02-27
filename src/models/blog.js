@@ -24,7 +24,7 @@ export default {
       });
     },
     *allBlog({ payload }, { call, put }) {
-      console.log(payload)
+        console.log(payload)
         const response = yield call(allBlog, payload);
         yield put({
             type: 'selectAllBlog',
