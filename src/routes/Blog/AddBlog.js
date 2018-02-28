@@ -87,12 +87,19 @@ export default class AddBlog extends Component {
       this._handleUpImageVisible(true)
   }
   _savePageContent=()=>{
+    console.log(this.state.blogBasic)
     if(!this.state.blogTitle){
         message.warn('请输入标题')
         return
     }
-    if(this.state.blog){
-
+    if(this.state.blogBasic&&this.state.blogDetail){
+        this.props.dispatch({
+            type: 'blog/saveBlog',
+            payload:{
+                blog_id:this.state.blogDetail.blog_id,
+                blog_content:this.state.blogData
+            }
+        });
     }else {
         this._handleBlogOKVisible(true)
     }

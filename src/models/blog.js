@@ -1,5 +1,5 @@
 
-import {addBlog, allBlog, selectBlog, selectBlogCategory} from '../services/api';
+import {addBlog, allBlog, saveBlog, selectBlog, selectBlogCategory} from '../services/api';
 import {routerRedux} from "dva/router";
 import {reloadAuthorized} from "../utils/Authorized";
 import {message} from "antd/lib/index";
@@ -57,6 +57,22 @@ export default {
           type: 'changeSaveBlogStatus',
           payload: false,
       });
+    },
+    *saveBlog({ payload }, { call, put }) {
+        yield put({
+            type: 'changeSaveBlogStatus',
+            payload: true,
+        });
+        const response = yield call(saveBlog, payload);
+        if(response.status==0){
+            message.success('保存成功');
+        }else {
+            message.success('保存异常');
+        }
+        yield put({
+            type: 'changeSaveBlogStatus',
+            payload: false,
+        });
     },
   },
 

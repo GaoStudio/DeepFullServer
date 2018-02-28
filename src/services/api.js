@@ -11,6 +11,12 @@ export async function addBlog(params) {
         body: params,
     });
 }
+export async function saveBlog(params) {
+    return request(host+'/api/blog/saveblog', {
+        method: 'POST',
+        body: params,
+    });
+}
 export async function allBlog(params) {
     return request(host+`/api/blog/blogs?${stringify(params)}`);
 }
