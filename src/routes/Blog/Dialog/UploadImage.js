@@ -36,7 +36,6 @@ export default class UploadImage extends PureComponent {
             onChange:this.onChangeHandle,
         };
         const {form,title,modalVisible} = this.props;
-        console.log(modalVisible)
         return (
             <Modal
                 title={title}
