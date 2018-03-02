@@ -8,7 +8,6 @@ import {host} from "../../services/api";
 import EditBlog from "./Dialog/EditBlog";
 
 @connect(({ blog }) => {
-    console.log(blog.blogs)
     return (
         {
            blogs: blog.blogs,

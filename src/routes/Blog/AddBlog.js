@@ -13,7 +13,7 @@ import styles from './AddBlog.less';
 import {connect} from "dva";
 import SaveBlog from "./Dialog/SaveBlog";
 import React from "react";
-const initialSource = ``;
+const initialSource = `测试数据`;
 const fullScreenStyle={
     position:'absolute',
     top:0,
@@ -45,14 +45,19 @@ export default class AddBlog extends Component {
         addBlogVisible:false,
         uploadImageVisible:false
     };
+    this.CodeMirror = null;
   }
   componentWillReceiveProps(nextProps){
-      console.log(nextProps)
       if (nextProps.blogDetail!=this.props.blogDetail) {
           this.setState({
               blogDetail: nextProps.blogDetail,
               blogData:nextProps.blogDetail.blog_content
           });
+          //this.updateState(nextProps.blogDetail.blog_content)
+          if(this.CodeMirror){
+              //console.log(this.CodeMirror.getCodeMirror())
+              //this.CodeMirror..codemirrorValueChanged()
+          }
       }
   }
   componentDidMount() {
@@ -82,18 +87,24 @@ export default class AddBlog extends Component {
       this._handleUpImageVisible(true)
   }
   _savePageContent=()=>{
+    console.log(this.state.blogBasic)
     if(!this.state.blogTitle){
         message.warn('请输入标题')
         return
     }
-    if(this.state.blog){
-
+    if(this.state.blogBasic&&this.state.blogDetail){
+        this.props.dispatch({
+            type: 'blog/saveBlog',
+            payload:{
+                blog_id:this.state.blogDetail.blog_id,
+                blog_content:this.state.blogData
+            }
+        });
     }else {
         this._handleBlogOKVisible(true)
     }
   }
   _addBlogOK=(fields)=>{
-      console.log(fields)
       fields.blog_content = this.state.blogData;
       fields.bblog_title = this.state.blogTitle;
       this.props.dispatch({
@@ -126,6 +137,7 @@ export default class AddBlog extends Component {
   }
 
   render() {
+      //console.log(this.state.blogData)
       return (
           <PageHeaderLayout>
             <div className={styles.container} style={this.state.fullScreen?fullScreenStyle:null}>
@@ -142,7 +154,7 @@ export default class AddBlog extends Component {
                       <li onClick={this._openFullscreen}  className={styles.floatRight}><a className={styles}><span className={styles.c4}></span></a></li>
                   </ul>
                   <div className={styles.editor}>
-                      <CodeMirror className={styles.CodeMirror}  options={{ mode: 'markdown' }} onChange={this.updateState} autoFocus value={this.state.blogData} />
+                      <CodeMirror ref={(ref)=>{ this.CodeMirror = ref}} className={styles.CodeMirror}  options={{ mode: 'markdown' }} onChange={this.updateState} autoFocus value={this.state.blogData} />
                   </div>
               </div>
               <div className={styles.spliter} style={this.state.fullScreen?{height:'100%'}:null}/>

@@ -124,7 +124,6 @@ export default class BlogCategory extends Component {
     });
   }
   handleOK = (fields) => {
-    console.log(fields)
     message.success('添加成功');
     this.setState({
       modalVisible: false,

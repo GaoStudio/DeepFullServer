@@ -1,5 +1,5 @@
 
-import {addBlog, allBlog, selectBlog, selectBlogCategory} from '../services/api';
+import {addBlog, allBlog, saveBlog, selectBlog, selectBlogCategory} from '../services/api';
 import {routerRedux} from "dva/router";
 import {reloadAuthorized} from "../utils/Authorized";
 import {message} from "antd/lib/index";
@@ -17,7 +17,6 @@ export default {
 
   effects: {
     *blogCategorys(_, { call, put }) {
-      console.log("models")
       const response = yield call(selectBlogCategory);
       yield put({
         type: 'selectBlogCategory',
@@ -25,7 +24,6 @@ export default {
       });
     },
     *allBlog({ payload }, { call, put }) {
-        console.log(payload)
         const response = yield call(allBlog, payload);
         yield put({
             type: 'selectAllBlog',
@@ -33,8 +31,6 @@ export default {
         });
     },
     *selectBlog({ payload }, { call, put }) {
-        console.log('payload')
-        console.log(payload)
         const response = yield call(selectBlog, payload);
         if(response.status==0){
             yield put({
@@ -62,6 +58,22 @@ export default {
           payload: false,
       });
     },
+    *saveBlog({ payload }, { call, put }) {
+        yield put({
+            type: 'changeSaveBlogStatus',
+            payload: true,
+        });
+        const response = yield call(saveBlog, payload);
+        if(response.status==0){
+            message.success('保存成功');
+        }else {
+            message.success('保存异常');
+        }
+        yield put({
+            type: 'changeSaveBlogStatus',
+            payload: false,
+        });
+    },
   },
 
   reducers: {
@@ -72,7 +84,6 @@ export default {
       };
     },
     selectBlogCategory(state, action) {
-      console.log(action.payload)
       return {
         ...state,
         blogCategorys: action.payload,
