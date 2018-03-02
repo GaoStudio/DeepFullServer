@@ -1,0 +1,204 @@
+.MusicPlayer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    background: #4c4c4c;
+    background: -webkit-linear-gradient(top, #4c4c4c 0%, #2c2d33 100%);
+    background: -moz-linear-gradient(top, #4c4c4c 0%, #2c2d33 100%);
+    background: -o-linear-gradient(top, #4c4c4c 0%, #2c2d33 100%);
+    background: -ms-linear-gradient(top, #4c4c4c 0%, #2c2d33 100%);
+    background: linear-gradient(top, #4c4c4c 0%, #2c2d33 100%);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.MusicPlayerWrapper{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+.MusicPlayerImg {
+    width: 30%;
+    height:0px;
+    padding-bottom:30%;
+    position:relative;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.MusicPlayerImg img{
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.MusicPlayerControl{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.MusicPlayerControlWrapper{
+    display: flex;
+    height: 100%;
+    max-height: 60px;
+    width: 70%;
+    max-width: 200px;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.MusicPlayerControlLeft{
+    flex: 1;
+    max-width: 30px;
+}
+.MusicPlayerControlRight{
+    flex: 1;
+}
+.MusicPlayButton{
+    width: 21px;
+    height: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.MusicPlayerControl .MusicPlay{
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+}
+.MusicPlayerControl .SoundPlay{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+}
+.MusicPlayerControl .MusicPlay span{
+    width: 21px;
+    height: 21px;
+    border:none;
+    background: transparent url(../images/play-pause.png) 0 0;
+}
+.MusicPlayPause{
+    background-position:0 -21px;
+}
+.MusicPlayerControl .SoundPlay span{
+    width: 14px;
+    height: 12px;
+    border:none;
+    margin-top: 2px;
+    background: transparent url(../images/mute-unmute.png) 0 0;
+}
+.SoundPlayPause{
+    background-position: 0 -12px;
+}
+.MusicPlayerName{
+    margin-left: 10px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    max-height: 22px;
+    overflow: hidden;
+    color: #ececec;
+    text-shadow: 1px 1px 1px rgba(0,0,0, .5);
+}
+.SoundPlaySlider{
+    cursor: pointer;
+
+    flex: 1;
+    margin-left: 5px;
+    position: relative;
+}
+.SoundPlaySlider .total{
+    width: 100%;
+    height: 8px;
+    background: #212227;
+    -webkit-box-shadow: inset 0px 1px 0px rgba(0,0,0, .3), 0px 1px 0px rgba(255,255,255, .25);
+    -moz-box-shadow: inset 0px 1px 0px rgba(0,0,0, .3), 0px 1px 0px rgba(255,255,255, .25);
+    box-shadow: inset 0px 1px 0px rgba(0,0,0, .3), 0px 1px 0px rgba(255,255,255, .25);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.SoundPlaySlider .current{
+    position: absolute;
+    height: 6px;
+    top: 1px;
+    left: 1px;
+    width: 60%;
+    background: url(../images/volume-bar.png) repeat-x;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.SoundPlaySlider .handle{
+    position: absolute;
+    display: block;
+    width: 12px;
+    height: 14px;
+    left: 60%;
+    top: -2px;
+    background: url(../images/handle.png) no-repeat;
+}
+.MusicPlayerProgress{
+    display: block;
+    height: 5px;
+    cursor: pointer;
+    position: relative;
+    -webkit-border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0px 0px 3px 3px;
+    border-radius: 0px 0px 3px 3px;
+    background: #999999;
+}
+.MusicPlayerProgress .loaded{
+    position: absolute;
+    top:0;
+    left: 0px;
+    -webkit-border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0px 0px 3px 3px;
+    border-radius: 0px 0px 3px 3px;
+    background: #cccccc;
+    width: 100%;
+    height: 5px;
+}
+.MusicPlayerProgress  .current{
+    position: absolute;
+    top:0;
+    left: 0px;
+    background: #64b44c;
+    -webkit-border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0px 0px 3px 3px;
+    border-radius: 0px 0px 3px 3px;
+    width: 0px;
+    height: 100%;
+}
+.MusicPlayerProgress  .control{
+    position: absolute;
+    top: -4px;
+    left: -2px;
+    width: 12px;
+    height: 14px;
+}
+.MusicPlayerProgress  .float{
+    position: absolute;
+    width: 33px;
+    height: 23px;
+    top: -26px;
+    margin-left: -17px;
+    background: url(../images/time-box.png);
+}
+.MusicPlayerProgress  .float .float-current{
+    width: 33px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #666666;
+    text-align: center;
+}
