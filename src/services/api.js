@@ -23,6 +23,9 @@ export async function allBlog(params) {
 export async function selectBlog(params) {
     return request(host+`/api/blog/blog?${stringify(params)}`);
 }
+export async function selectTimeline(params) {
+    return request(host+`/api/blog/timeline?${stringify(params)}`);
+}
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
