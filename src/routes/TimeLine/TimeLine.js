@@ -2,10 +2,12 @@
 import React,{ Component } from 'react';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {host} from "../../services/api";
-import { Table ,Divider,Menu,Dropdown} from 'antd';
+import { Table ,Divider,Menu,Dropdown,Button} from 'antd';
 import {routerRedux} from "dva/router";
-
+import styles from './TimeLine.less';
 import {connect} from "dva";
+import MusicPlayer from "../../components/Custom/MusicPlayer";
+import AddTimeline from "./Dialog/AddTimeline";
 @connect(({ timeline }) => {
     console.log(timeline)
     return (
@@ -17,6 +19,9 @@ import {connect} from "dva";
 export default class TimeLine extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            modalVisible: false,
+        };
         this.columns = [{
             title: '时间',
             dataIndex: 'timeline_time',
@@ -29,11 +34,11 @@ export default class TimeLine extends Component {
             title: '图片',
             dataIndex: 'timeline_images',
             key: 'timeline_images',
+            render: val => <img style={{maxWidth:100,height:'auto'}} src={host+'/'+val}></img>
         }, {
             title: '视频',
             dataIndex: 'timeline_video',
             key: 'timeline_video',
-            render: val => <img style={{maxWidth:100,height:'auto'}} src={host+'/'+val}></img>
         }, {
             title: '音乐',
             dataIndex: 'timeMusic',
@@ -62,9 +67,10 @@ export default class TimeLine extends Component {
         //}
     }
     _operationMusic = (music)=>{
+        console.log(music)
         return(
-            <div>
-                {music.music_name}
+            <div style={{width:300,backgroundColor:'#fff',padding:10}}>
+                <MusicPlayer data={music}/>
             </div>
         )
     }
@@ -77,10 +83,33 @@ export default class TimeLine extends Component {
           </span>
         );
     }
+    handleModalVisible = (flag) => {
+        this.setState({
+            modalVisible: !!flag,
+        });
+    }
+    _addTimelineOK=(fields)=>{
+        this.props.dispatch({
+            type: 'blog/addBlog',
+            payload:fields
+        });
+    }
+
     render() {
         return (
             <PageHeaderLayout >
+                <div className={styles.tableListOperator}>
+                    <Button icon="plus" type="primary" onClick={() => { this.type = 1; this.record = null; this.handleModalVisible(true); }}>
+                        新建
+                    </Button>
+                </div>
                 <Table dataSource={this.props.timelines} columns={this.columns} bordered/>
+                <AddTimeline
+                    title = '新增timeline'
+                    handleOK = {this._addTimelineOK}
+                    handleModalVisible={this.handleModalVisible}
+                    modalVisible={this.state.modalVisible}
+                />
             </PageHeaderLayout>
         )
     }

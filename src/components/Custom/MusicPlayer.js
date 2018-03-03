@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './MusicPlayer.css';
+import styles from './MusicPlayer.less';
 class MusicPlayer extends Component {
     constructor(props){
         super(props)
@@ -40,40 +40,41 @@ class MusicPlayer extends Component {
 
     }
     render() {
+        console.log(this.state.data)
         return (
-            <div className="MusicPlayer">
-                <div className="MusicPlayerWrapper">
-                    <div className="MusicPlayerImg" ><img src={this.state.data.tmusic_img} /></div>
-                    <div className="MusicPlayerControl">
-                        <div className="MusicPlayerControlLeft"></div>
-                        <div className="MusicPlayerControlWrapper">
-                            <div className="MusicPlay">
-                                <div className="MusicPlayButton" onClick={this._play}>
+            <div className={styles.MusicPlayer} >
+                <div className={styles.MusicPlayerWrapper} >
+                    <div className={styles.MusicPlayerImg} ><img src={this.state.data.music_img} /></div>
+                    <div className={styles.MusicPlayerControl}>
+                        <div className={styles.MusicPlayerControlLeft}></div>
+                        <div className={styles.MusicPlayerControlWrapper}>
+                            <div className={styles.MusicPlay}>
+                                <div className={styles.MusicPlayButton} onClick={this._play}>
                                     <span  aria-controls="mep_0" title="Play/Pause"></span>
                                 </div>
-                                <div className="MusicPlayerName">{this.state.data.tmusic_name} -- {this.state.data.tmusic_star}</div>
+                                <div className={styles.MusicPlayerName}>{this.state.data.music_name} -- {this.state.data.music_star}</div>
                             </div>
-                            <div className="SoundPlay">
-                                <div className="MusicPlayButton">
+                            <div className={styles.SoundPlay}>
+                                <div className={styles.MusicPlayButton}>
                                     <span type="button" aria-controls="mep_0" title="Play/Pause"></span>
                                 </div>
-                                <div className="SoundPlaySlider">
-                                    <div className="total"></div>
-                                    <div className="current"></div>
-                                    <div className="handle"></div>
+                                <div className={styles.SoundPlaySlider}>
+                                    <div className={styles.total}></div>
+                                    <div className={styles.current}></div>
+                                    <div className={styles.handle}></div>
                                 </div>
                             </div>
                         </div>
-                        <div className="MusicPlayerControlRight"> </div>
+                        <div className={styles.MusicPlayerControlRight}> </div>
 
                     </div>
                 </div>
-                <div className="MusicPlayerProgress">
-                    <div className="loaded" ref="buffered"></div>
-                    <div className="current" ref="played"></div>
-                    <img className="control" src={require('../images/handle.png')}></img>
+                <div className={styles.MusicPlayerProgress}>
+                    <div className={styles.loaded} ref="buffered"></div>
+                    <div className={styles.current} ref="played"></div>
+                    <img className={styles.control} src={require('../../assets/handle.png')}></img>
                 </div>
-                <audio src={this.state.data.tmusic_src} ref={(ref)=>{ this.audio=ref}} crossOrigin="anonymous"></audio>
+                <audio src={this.state.data.music_src} ref={(ref)=>{ this.audio=ref}} crossOrigin="anonymous"></audio>
             </div>
         )
     }

@@ -2,11 +2,16 @@
 import React,{ Component } from 'react';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {host} from "../../services/api";
-import { Table ,Divider} from 'antd';
+import { Table ,Divider,Button} from 'antd';
 import {routerRedux} from "dva/router";
+import styles from './MusicBox.less';
+import AddMusic from "./Dialog/AddMusic";
 export default class MusicBox extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            modalVisible: false,
+        };
         this.columns = [{
             title: '音乐',
             dataIndex: 'bblog_time',
@@ -40,10 +45,32 @@ export default class MusicBox extends Component {
           </span>
         );
     }
+    handleModalVisible = (flag) => {
+        this.setState({
+            modalVisible: !!flag,
+        });
+    }
+    _addTimelineOK=(fields)=>{
+        this.props.dispatch({
+            type: 'blog/addBlog',
+            payload:fields
+        });
+    }
     render() {
         return (
             <PageHeaderLayout >
+                <div className={styles.tableListOperator}>
+                    <Button icon="plus" type="primary" onClick={() => { this.type = 1; this.record = null; this.handleModalVisible(true); }}>
+                        新建
+                    </Button>
+                </div>
                 <Table dataSource={this.props.blogs&&this.props.blogs.data} columns={this.columns} bordered/>
+                <AddMusic
+                    title = '音乐'
+                    handleOK = {this._addTimelineOK}
+                    handleModalVisible={this.handleModalVisible}
+                    modalVisible={this.state.modalVisible}
+                />
             </PageHeaderLayout>
         )
     }
