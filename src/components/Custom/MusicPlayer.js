@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './MusicPlayer.less';
+import styles from './MusicPlayer.less' ;
 class MusicPlayer extends Component {
     constructor(props){
         super(props)
