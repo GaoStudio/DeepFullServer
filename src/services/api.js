@@ -18,7 +18,7 @@ export async function saveBlog(params) {
     });
 }
 export async function allBlog(params) {
-    return request(host+`/api/blog/blogs?${stringify(params)}`);
+    return request(host+`/api/blog/allblogs?${stringify(params)}`);
 }
 export async function selectBlog(params) {
     return request(host+`/api/blog/blog?${stringify(params)}`);
