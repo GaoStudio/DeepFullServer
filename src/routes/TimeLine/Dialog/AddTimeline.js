@@ -64,7 +64,7 @@ export default class AddTimeline extends PureComponent {
                 <FormItem
                     labelCol={{ span: 5 }}
                     wrapperCol={{ span: 15 }}
-                    label="地址">
+                    label="地址 ">
                     {form.getFieldDecorator('timeline_address', {rules: [{required: false,}],})(
                         <Input placeholder="地址" />
                     )}
