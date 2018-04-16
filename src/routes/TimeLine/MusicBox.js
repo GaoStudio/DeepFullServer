@@ -6,6 +6,15 @@ import { Table ,Divider,Button} from 'antd';
 import {routerRedux} from "dva/router";
 import styles from './MusicBox.less';
 import AddMusic from "./Dialog/AddMusic";
+import {connect} from "dva";
+@connect(({ timeline }) => {
+    console.log(timeline)
+    return (
+        {
+            timeMusics: timeline.timeMusic,
+        }
+    );
+})
 export default class MusicBox extends Component {
     constructor(props){
         super(props);
@@ -14,25 +23,32 @@ export default class MusicBox extends Component {
         };
         this.columns = [{
             title: '音乐',
-            dataIndex: 'bblog_time',
-            key: 'bblog_time',
+            dataIndex: 'music_name',
+            key: 'music_name',
         },{
             title: '歌手',
-            dataIndex: 'bblog_title',
-            key: 'bblog_title',
+            dataIndex: 'music_star',
+            key: 'music_star',
         }, {
             title: '资源',
-            dataIndex: 'bblog_sub_title',
-            key: 'bblog_sub_title',
+            dataIndex: 'music_src',
+            key: 'music_src',
         }, {
             title: '封面',
-            dataIndex: 'bblog_logo',
-            key: 'bblog_logo',
+            dataIndex: 'music_img',
+            key: 'music_img',
             render: val => <img style={{maxWidth:100,height:'auto'}} src={host+'/'+val}></img>
         }, {
             title: '操作',
             render:this._operationAction,
         }];
+    }
+    componentDidMount() {
+        //if(!this.props.timelines){
+        this.props.dispatch({
+            type: 'timeline/selectTimeMusic',
+        });
+        //}
     }
     _operationAction=(text, record) => {
         return (
@@ -64,7 +80,7 @@ export default class MusicBox extends Component {
                         新建
                     </Button>
                 </div>
-                <Table dataSource={this.props.blogs&&this.props.blogs.data} columns={this.columns} bordered/>
+                <Table dataSource={this.props.timeMusics} columns={this.columns} bordered/>
                 <AddMusic
                     title = '音乐'
                     handleOK = {this._addTimelineOK}

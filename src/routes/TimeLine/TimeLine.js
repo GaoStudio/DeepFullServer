@@ -43,13 +43,17 @@ export default class TimeLine extends Component {
             title: '音乐',
             dataIndex: 'timeMusic',
             key: 'timeMusic',
-            render: val =>{
-                let menu = this._operationMusic(val);
-                return(
-                    <Dropdown overlay={menu} placement="topCenter">
-                        <span>{val.music_name}</span>
-                    </Dropdown>)
+            render: val => {
+                if (val) {
+                    let menu = this._operationMusic(val);
+                    return (
+                        <Dropdown overlay={menu} placement="topCenter">
+                            <span>{musicName}</span>
+                        </Dropdown>)
+                } else {
+                    return   <span>未设置</span>
                 }
+            }
         }, {
             title: '地点',
             dataIndex: 'timeline_address',
@@ -68,6 +72,9 @@ export default class TimeLine extends Component {
     }
     _operationMusic = (music)=>{
         console.log(music)
+        if(!music){
+            return null
+        }
         return(
             <div style={{width:300,backgroundColor:'#fff',padding:10}}>
                 <MusicPlayer data={music}/>

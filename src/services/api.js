@@ -26,6 +26,9 @@ export async function selectBlog(params) {
 export async function selectTimeline(params) {
     return request(host+`/api/blog/timeline?${stringify(params)}`);
 }
+export async function selectTimeMusic() {
+    return request(host+'/api/blog/musicbox');
+}
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
