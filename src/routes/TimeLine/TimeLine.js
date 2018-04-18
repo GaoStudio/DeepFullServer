@@ -48,7 +48,7 @@ export default class TimeLine extends Component {
                     let menu = this._operationMusic(val);
                     return (
                         <Dropdown overlay={menu} placement="topCenter">
-                            <span>{musicName}</span>
+                            <span>{val.music_name}</span>
                         </Dropdown>)
                 } else {
                     return   <span>未设置</span>

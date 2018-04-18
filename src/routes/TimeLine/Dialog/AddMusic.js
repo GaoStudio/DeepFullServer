@@ -6,13 +6,19 @@ import {host} from "../../../services/api";
 const FormItem = Form.Item;
 @Form.create()
 export default class AddMusic extends PureComponent {
-    onChangeHandle = (data) => {
+    onImageChangeHandle = (data) => {
         if(data&&data.file.response){
             console.log(data.file.response)
             this.props.form.setFieldsValue({
-                image_url: host+"/"+data.file.response.data.image_url,
-                image_width:data.file.response.data.width,
-                image_height:data.file.response.data.height,
+                music_logo: host+"/"+data.file.response.data,
+            });
+        }
+    }
+    onMusicChangeHandle = (data) => {
+        if(data&&data.file.response){
+            console.log(data.file.response)
+            this.props.form.setFieldsValue({
+                music_src: host+"/"+data.file.response.data,
             });
         }
     }
@@ -28,12 +34,19 @@ export default class AddMusic extends PureComponent {
         });
     };
     render(){
-        const props2 = {
-            action: host+'/api/blog/image',
+        const imageProps = {
+            action: host+'/api/time/image',
             listType: 'picture',
             name:'image',
             className: 'upload-list-inline',
-            onChange:this.onChangeHandle,
+            onChange:this.onImageChangeHandle,
+        };
+        const musicProps = {
+            action: host+'/api/time/music',
+            listType: 'text',
+            name:'music',
+            className: 'upload-list-inline',
+            onChange:this.onMusicChangeHandle,
         };
         const {form,title,modalVisible} = this.props;
         return (
@@ -62,7 +75,12 @@ export default class AddMusic extends PureComponent {
                     labelCol={{ span: 5 }}
                     wrapperCol={{ span: 15 }}
                     label="图片">
-                    <Upload {...props2}>
+                    {form.getFieldDecorator('music_logo', {
+                        rules: [{ required: true, message: '请输入路径' }],
+                    })(
+                        <Input placeholder="请输入网络链接" />
+                    )}
+                    <Upload {...imageProps}>
                         <Button>
                             <Icon type="upload" /> upload
                         </Button>
@@ -72,7 +90,12 @@ export default class AddMusic extends PureComponent {
                     labelCol={{ span: 5 }}
                     wrapperCol={{ span: 15 }}
                     label="歌曲">
-                    <Upload {...props2}>
+                    {form.getFieldDecorator('music_src', {
+                        rules: [{ required: true, message: '请输入路径' }],
+                    })(
+                        <Input placeholder="请输入网络链接" />
+                    )}
+                    <Upload {...musicProps}>
                         <Button>
                             <Icon type="upload" /> upload
                         </Button>

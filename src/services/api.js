@@ -24,10 +24,16 @@ export async function selectBlog(params) {
     return request(host+`/api/blog/blog?${stringify(params)}`);
 }
 export async function selectTimeline(params) {
-    return request(host+`/api/blog/timeline?${stringify(params)}`);
+    return request(host+`/api/time/timeline?${stringify(params)}`);
 }
 export async function selectTimeMusic() {
-    return request(host+'/api/blog/musicbox');
+    return request(host+'/api/time/musicbox');
+}
+export async function addMusic(params) {
+    return request(host+'/api/time/addmusic', {
+        method: 'POST',
+        body: params,
+    });
 }
 export async function queryProjectNotice() {
   return request('/api/project/notice');

@@ -12,6 +12,7 @@ import {connect} from "dva";
     return (
         {
             timeMusics: timeline.timeMusic,
+            addMusicStats: timeline.addMusicStats,
         }
     );
 })
@@ -43,12 +44,21 @@ export default class MusicBox extends Component {
             render:this._operationAction,
         }];
     }
+    componentWillReceiveProps(newProps, newState){
+        if(this.props.addMusicStats!=newProps.addMusicStats&&newProps.addMusicStats==false){
+            this.handleModalVisible();
+            this.loadData();
+        }
+    }
     componentDidMount() {
         //if(!this.props.timelines){
+        this.loadData();
+        //}
+    }
+    loadData(){
         this.props.dispatch({
             type: 'timeline/selectTimeMusic',
         });
-        //}
     }
     _operationAction=(text, record) => {
         return (
@@ -68,7 +78,7 @@ export default class MusicBox extends Component {
     }
     _addTimelineOK=(fields)=>{
         this.props.dispatch({
-            type: 'blog/addBlog',
+            type: 'timeline/addTimeMusic',
             payload:fields
         });
     }

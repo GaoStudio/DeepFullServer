@@ -1,5 +1,8 @@
 import { routerRedux } from 'dva/router';
-import {fakeAccountLogin, selectBlogCategory, selectTimeline, selectTimeMusic} from '../services/api';
+import {
+    addBlog, addMusic, addTimeMusic, fakeAccountLogin, selectBlogCategory, selectTimeline,
+    selectTimeMusic
+} from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import {message} from "antd/lib/index";
@@ -10,6 +13,7 @@ export default {
   state: {
     timelines:[],
     timeMusic:[],
+    addMusicStats:false
   },
 
   effects: {
@@ -35,7 +39,22 @@ export default {
           }else {
               message.success(response.message);
           }
-
+      },
+      *addTimeMusic({ payload }, { call, put }) {
+          yield put({
+              type: 'changeTimeMusicStatus',
+              payload: true,
+          });
+          const response = yield call(addMusic, payload);
+          if(response.status==0){
+              message.success('添加成功');
+          }else {
+              message.success('添加异常');
+          }
+          yield put({
+              type: 'changeTimeMusicStatus',
+              payload: false,
+          });
       },
   },
 
@@ -50,6 +69,12 @@ export default {
           return {
               ...state,
               timeMusic: action.payload,
+          };
+      },
+      changeTimeMusicStatus(state, action){
+          return {
+              ...state,
+              addMusicStats: action.payload,
           };
       },
   },
